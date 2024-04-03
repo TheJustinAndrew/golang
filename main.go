@@ -146,9 +146,16 @@ func Create(db *sql.DB) {
 
 	fmt.Println("Table 'Reminders' created successfully!")
 }
-
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type")
+}
 func main() {
-	// Connect()
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w) // Enable CORS for all routes
+		fmt.Fprintln(w, "Hello from your Go server!")
+	})
 	db = Connect()
 	router := gin.Default()
 	router.GET("/todoList", getTodoLists)
