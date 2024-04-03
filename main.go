@@ -163,6 +163,7 @@ func main() {
 	router.POST("/updateData", editData)
 	router.GET("/deleteData/:id", deleteData)
 	// router.Run("192.168.1.4:8000")
-	router.Run("localhost:8080")
+	// router.Run("localhost:8080")
+	router.Run("0.0.0.0:8080")
 	// router.Run("golang.alwaysdata.net")
 }
