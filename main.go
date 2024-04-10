@@ -42,6 +42,10 @@ func getTodoLists(c *gin.Context) {
 	fmt.Println(todoList)
 	c.IndentedJSON(http.StatusOK, todoList)
 }
+func start(c *gin.Context) {
+
+	c.IndentedJSON(http.StatusOK, gin.H{"message": "Welcome to golang todo api's"})
+}
 func insertData(c *gin.Context) {
 	var todoList TodoList
 	if err := c.BindJSON(&todoList); err != nil {
@@ -158,12 +162,13 @@ func main() {
 	})
 	db = Connect()
 	router := gin.Default()
+	router.GET("/", start)
 	router.GET("/todoList", getTodoLists)
 	router.POST("/insertData", insertData)
 	router.POST("/updateData", editData)
 	router.GET("/deleteData/:id", deleteData)
 	// router.Run("192.168.1.4:8000")
-	// router.Run("localhost:8080")
-	router.Run("0.0.0.0:8080")
+	router.Run("localhost:8080")
+	// router.Run("0.0.0.0:8080")
 	// router.Run("golang.alwaysdata.net")
 }
