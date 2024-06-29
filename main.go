@@ -3,11 +3,11 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/websocket"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"net/http"
 )
 
 var (
@@ -155,6 +155,16 @@ func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 	(*w).Header().Set("Access-Control-Allow-Headers", "Content-Type")
 }
+
+func wsEndpoint(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World")
+}
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
+
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		enableCors(&w) // Enable CORS for all routes
@@ -164,11 +174,12 @@ func main() {
 	router := gin.Default()
 	router.GET("/", start)
 	router.GET("/todoList", getTodoLists)
+	router.GET("/ws", getTodoLists)
 	router.POST("/insertData", insertData)
 	router.POST("/updateData", editData)
 	router.GET("/deleteData/:id", deleteData)
-	// router.Run("192.168.1.4:8000")
+	router.Run("192.168.1.4:8000")
 	// router.Run("localhost:8080")
-	router.Run("0.0.0.0:8080")
+	// router.Run("0.0.0.0:8080")
 	// router.Run("golang.alwaysdata.net")
 }
